@@ -34,14 +34,25 @@ class Program{
             System.Console.WriteLine($"Error while writing Files:{ex.Message}");
         }
     }
+    public static int intValidate(){
+        retry:
+        try{
+            return Convert.ToInt32(Console.ReadLine()); 
+        }catch(Exception ex){
+            System.Console.WriteLine("Enter integer number:"+ex.Message);
+            goto retry;
+        }
+    }
+
     static bool adminLoginVerify(){
         string userName,password;
         System.Console.WriteLine("LOGIN");
         System.Console.WriteLine("Enter your Username:");
         userName=Console.ReadLine()??"";
+        System.Console.WriteLine(adminDetails["Suriya"]);
         System.Console.WriteLine("Enter your Password:");
         password=Console.ReadLine()??"";
-        if(!adminDetails.ContainsValue(userName)){
+        if(!adminDetails.ContainsKey(userName)){
             return false;
         }
         if(adminDetails[userName]!=password){
@@ -58,7 +69,7 @@ class Program{
         System.Console.WriteLine("Enter To:");
         to=Console.ReadLine()??"";
         System.Console.WriteLine("Enter Seats Available:");
-        seatsAvailable=Convert.ToInt32(Console.ReadLine());
+        seatsAvailable=intValidate();
         changeBusId:
         System.Console.WriteLine("Enter BusID:");
         busId=Console.ReadLine()??"";
@@ -85,6 +96,7 @@ class Program{
         String addOrRemove,exitPortal;
         if(!adminLoginVerify()){
             System.Console.WriteLine("Wrong Username or Password.");
+            return;
         }
         adminContinue:
         System.Console.WriteLine("Are you going to add or remove transport(A/R):");
@@ -177,7 +189,7 @@ class Program{
         }
         while(flag){
             System.Console.WriteLine("\nWelcome to Ticket Booking:\n1.View All Travels\n2.Book Ticket\n3.Cancel Ticket\n4.View Booked Tickets\n5.Exit Portal.\n");
-            userOptions=Convert.ToInt32(Console.ReadLine());
+            userOptions=intValidate();
             switch(userOptions){
                 case 1:
                     foreach(var tranport in transports){
@@ -195,7 +207,7 @@ class Program{
                         goto changeBusID;
                     }
                     System.Console.WriteLine("Enter number of seats you need:");
-                    seatsNeeded=Convert.ToInt32(Console.ReadLine());
+                    seatsNeeded=intValidate();
                     transport=(Transport)transports[busId];
                     if(seatsNeeded>transport.SeatsAvailable){
                         System.Console.WriteLine("Not Enough Seats.");
